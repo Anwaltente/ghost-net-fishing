@@ -1,0 +1,152 @@
+/* Ghost Net Fishing: schlichtes, funktionales Layout für den Prototyp */
+
+:root {
+    --meer: #0b3954;
+    --meer-hell: #e6f0f6;
+    --akzent: #087e8b;
+    --text: #1d2a33;
+    --grau: #5d6b75;
+    --linie: #d5dde3;
+    --hintergrund: #f5f7f9;
+    --gemeldet: #d97706;
+    --bevorstehend: #2563eb;
+    --geborgen: #15803d;
+    --verschollen: #6b7280;
+    --fehler: #b91c1c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--hintergrund);
+}
+
+a { color: var(--akzent); }
+
+/* Kopfbereich mit Navigation */
+.kopf { background: var(--meer); color: #fff; }
+.kopf-innen {
+    max-width: 1100px; margin: 0 auto; padding: 12px 20px;
+    display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+}
+.marke { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; }
+.marke-logo { font-size: 28px; line-height: 1; }
+.marke-text { font-weight: 700; font-size: 18px; display: flex; flex-direction: column; line-height: 1.1; }
+.marke-text small { font-weight: 400; font-size: 12px; opacity: .75; }
+.navigation { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+.navigation a {
+    color: #d7e6ef; text-decoration: none; padding: 8px 12px; border-radius: 6px;
+}
+.navigation a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.navigation a.aktiv { background: rgba(255,255,255,.18); color: #fff; font-weight: 600; }
+.nutzer { display: flex; align-items: center; gap: 12px; }
+.nutzer-name::before { content: "● "; color: #6ee7b7; }
+.nutzer-link { color: #d7e6ef; }
+.inline { display: inline; margin: 0; }
+
+/* Inhalt */
+.inhalt { max-width: 1100px; margin: 0 auto; padding: 24px 20px 40px; }
+h1 { font-size: 26px; margin: 8px 0 12px; color: var(--meer); }
+h2 { font-size: 19px; margin: 28px 0 12px; color: var(--meer); }
+.einleitung { color: var(--grau); max-width: 760px; }
+.klein { font-size: 12px; color: var(--grau); }
+
+.buehne {
+    background: #fff; border: 1px solid var(--linie); border-left: 6px solid var(--akzent);
+    border-radius: 8px; padding: 20px 24px;
+}
+.buehne p { max-width: 780px; }
+
+/* Kacheln der Startseite */
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+.kachel {
+    background: #fff; border: 1px solid var(--linie); border-top: 5px solid var(--grau);
+    border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column;
+}
+.kachel-zahl { font-size: 32px; font-weight: 700; }
+.kachel-text { color: var(--grau); }
+.kachel.status-gemeldet { border-top-color: var(--gemeldet); }
+.kachel.status-bergung_bevorstehend { border-top-color: var(--bevorstehend); }
+.kachel.status-geborgen { border-top-color: var(--geborgen); }
+.kachel.status-verschollen { border-top-color: var(--verschollen); }
+.schritte li { margin-bottom: 6px; }
+
+/* Knöpfe */
+.knopfleiste { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.knopf {
+    display: inline-block; padding: 9px 16px; border-radius: 6px; border: 1px solid var(--linie);
+    background: #fff; color: var(--text); text-decoration: none; font: inherit; cursor: pointer;
+}
+.knopf:hover { border-color: var(--akzent); }
+.knopf-primaer { background: var(--akzent); border-color: var(--akzent); color: #fff; font-weight: 600; }
+.knopf-primaer:hover { background: #066a75; }
+.knopf-erfolg { background: var(--geborgen); border-color: var(--geborgen); color: #fff; }
+.knopf-warnung { color: var(--fehler); border-color: #f1c4c4; }
+.knopf-hell { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
+.knopf-klein { padding: 5px 10px; font-size: 13px; }
+
+/* Formulare */
+.karte { background: #fff; border: 1px solid var(--linie); border-radius: 8px; padding: 20px 24px; }
+.karte-schmal { max-width: 460px; }
+.formular fieldset { border: 0; padding: 0; margin: 0 0 18px; }
+.formular legend { font-weight: 700; color: var(--meer); margin-bottom: 8px; font-size: 16px; }
+.feldzeile { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.feld { display: flex; flex-direction: column; margin-bottom: 12px; }
+.feld-schmal { max-width: 260px; }
+.feld label { font-weight: 600; margin-bottom: 4px; }
+.feld input, .feld textarea, .filterleiste select {
+    font: inherit; padding: 8px 10px; border: 1px solid #b8c4cc; border-radius: 6px; background: #fff;
+}
+.feld input:focus, .feld textarea:focus { outline: 2px solid var(--akzent); border-color: var(--akzent); }
+.feldfehler { color: var(--fehler); font-size: 13px; margin-top: 3px; }
+.checkbox { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.hinweis {
+    background: var(--meer-hell); border-left: 4px solid var(--akzent); padding: 10px 14px;
+    border-radius: 4px; margin: 8px 0 16px; color: var(--text);
+}
+
+/* Meldungen */
+.meldungen { list-style: none; padding: 0; margin: 0 0 16px; }
+.meldungen li { padding: 10px 14px; border-radius: 6px; margin-bottom: 6px; }
+.meldung-info { background: #e7f6ec; border: 1px solid #b7e2c4; color: #14532d; }
+.meldung-fehler { background: #fdecec; border: 1px solid #f5bcbc; color: var(--fehler); }
+.meldung-warnung { background: #fff6e0; border: 1px solid #f3d99b; }
+
+/* Tabelle */
+.filterleiste { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.anzahl { color: var(--grau); margin-left: auto; }
+.tabelle {
+    width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--linie);
+    border-radius: 8px; overflow: hidden;
+}
+.tabelle th {
+    text-align: left; background: #eef3f6; color: var(--meer); font-size: 13px;
+    padding: 10px 12px; border-bottom: 1px solid var(--linie);
+}
+.tabelle td { padding: 10px 12px; border-bottom: 1px solid #edf1f4; vertical-align: top; }
+.tabelle tr:last-child td { border-bottom: 0; }
+.bemerkung { font-size: 12px; color: var(--grau); margin-top: 2px; max-width: 340px; }
+.aktionen { display: flex; gap: 6px; flex-wrap: wrap; }
+.leer { background: #fff; border: 1px dashed var(--linie); border-radius: 8px; padding: 18px; color: var(--grau); }
+
+/* Status Kennzeichnung */
+.status {
+    display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    color: #fff; background: var(--grau); white-space: nowrap;
+}
+.status.status-gemeldet { background: var(--gemeldet); }
+.status.status-bergung_bevorstehend { background: var(--bevorstehend); }
+.status.status-geborgen { background: var(--geborgen); }
+.status.status-verschollen { background: var(--verschollen); }
+
+.fuss { text-align: center; color: var(--grau); font-size: 12px; padding: 20px; border-top: 1px solid var(--linie); }
+
+@media (max-width: 720px) {
+    .feldzeile { grid-template-columns: 1fr; }
+    .tabelle th:nth-child(4), .tabelle td:nth-child(4) { display: none; }
+}

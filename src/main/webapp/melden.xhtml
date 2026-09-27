@@ -1,0 +1,92 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:pt="jakarta.faces.passthrough">
+
+    <ui:define name="titel">Netz melden</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Geisternetz melden</h1>
+        <p class="einleitung">
+            Bitte geben Sie den Standort als GPS Koordinaten in Dezimalgrad an
+            (Norden und Osten positiv, Süden und Westen negativ).
+        </p>
+
+        <h:form id="meldeForm" styleClass="formular karte">
+            <fieldset>
+                <legend>Angaben zum Netz</legend>
+
+                <div class="feldzeile">
+                    <div class="feld">
+                        <h:outputLabel for="breitengrad" value="Breitengrad *"/>
+                        <h:inputText id="breitengrad" value="#{meldungBean.netz.breitengrad}"
+                                     label="Breitengrad" pt:placeholder="z. B. 54.1823" pt:inputmode="decimal"
+                                     converterMessage="Bitte den Breitengrad als Zahl angeben, z. B. 54.1823."/>
+                        <h:message for="breitengrad" styleClass="feldfehler"/>
+                    </div>
+                    <div class="feld">
+                        <h:outputLabel for="laengengrad" value="Längengrad *"/>
+                        <h:inputText id="laengengrad" value="#{meldungBean.netz.laengengrad}"
+                                     label="Längengrad" pt:placeholder="z. B. 7.8856" pt:inputmode="decimal"
+                                     converterMessage="Bitte den Längengrad als Zahl angeben, z. B. 7.8856."/>
+                        <h:message for="laengengrad" styleClass="feldfehler"/>
+                    </div>
+                </div>
+
+                <div class="feld feld-schmal">
+                    <h:outputLabel for="groesse" value="Geschätzte Größe in m² *"/>
+                    <h:inputText id="groesse" value="#{meldungBean.netz.geschaetzteGroesse}"
+                                 label="Größe" pt:placeholder="z. B. 50" pt:inputmode="numeric"
+                                 converterMessage="Bitte die Größe als ganze Zahl angeben."/>
+                    <h:message for="groesse" styleClass="feldfehler"/>
+                </div>
+
+                <div class="feld">
+                    <h:outputLabel for="bemerkung" value="Bemerkung (optional)"/>
+                    <h:inputTextarea id="bemerkung" value="#{meldungBean.netz.bemerkung}" rows="3"
+                                     pt:placeholder="z. B. Farbe, Netzart, Orientierungspunkte"/>
+                    <h:message for="bemerkung" styleClass="feldfehler"/>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Meldende Person</legend>
+
+                <div class="checkbox">
+                    <h:selectBooleanCheckbox id="anonym" value="#{meldungBean.anonym}">
+                        <f:ajax execute="@this" render="personenAngaben"/>
+                    </h:selectBooleanCheckbox>
+                    <h:outputLabel for="anonym" value="Anonym melden (ohne Name und Telefonnummer)"/>
+                </div>
+
+                <h:panelGroup id="personenAngaben" layout="block">
+                    <h:panelGroup layout="block" styleClass="feldzeile" rendered="#{not meldungBean.anonym}">
+                        <div class="feld">
+                            <h:outputLabel for="name" value="Name *"/>
+                            <h:inputText id="name" value="#{meldungBean.melder.name}" label="Name"/>
+                            <h:message for="name" styleClass="feldfehler"/>
+                        </div>
+                        <div class="feld">
+                            <h:outputLabel for="telefon" value="Telefonnummer für Rückfragen *"/>
+                            <h:inputText id="telefon" value="#{meldungBean.melder.telefonnummer}"
+                                         label="Telefonnummer" pt:placeholder="+49 171 2345678" pt:type="tel"/>
+                            <h:message for="telefon" styleClass="feldfehler"/>
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="hinweis" rendered="#{meldungBean.anonym}">
+                        Ihre Meldung wird ohne Personenbezug gespeichert. Für Rückfragen
+                        sind Sie dann allerdings nicht erreichbar.
+                    </h:panelGroup>
+                </h:panelGroup>
+            </fieldset>
+
+            <div class="knopfleiste">
+                <h:commandButton id="melden" value="Geisternetz melden" action="#{meldungBean.melden}"
+                                 styleClass="knopf knopf-primaer"/>
+                <h:link outcome="index" value="Abbrechen" styleClass="knopf"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

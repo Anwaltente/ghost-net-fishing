@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="titel">Start</ui:define>
+
+    <ui:define name="inhalt">
+        <section class="buehne">
+            <h1>Geisternetze melden und bergen</h1>
+            <p>
+                Herrenlose Fischernetze treiben jahrelang im Meer und werden zur tödlichen Falle für
+                Fische, Seevögel und Meeressäuger. Mit dieser Anwendung können Sie gesichtete Netze
+                melden, auch anonym. Bergende Personen sehen, welche Netze noch zu bergen sind,
+                tragen sich für eine Bergung ein und melden das Netz anschließend als geborgen.
+            </p>
+            <div class="knopfleiste">
+                <h:link outcome="melden" value="Geisternetz melden" styleClass="knopf knopf-primaer"/>
+                <h:link outcome="netze" value="Zu bergende Netze ansehen" styleClass="knopf"/>
+            </div>
+        </section>
+
+        <h2>Aktueller Stand</h2>
+        <div class="kacheln">
+            <div class="kachel status-gemeldet">
+                <span class="kachel-zahl">#{startseiteBean.anzahl('GEMELDET')}</span>
+                <span class="kachel-text">Gemeldet</span>
+            </div>
+            <div class="kachel status-bergung_bevorstehend">
+                <span class="kachel-zahl">#{startseiteBean.anzahl('BERGUNG_BEVORSTEHEND')}</span>
+                <span class="kachel-text">Bergung bevorstehend</span>
+            </div>
+            <div class="kachel status-geborgen">
+                <span class="kachel-zahl">#{startseiteBean.anzahl('GEBORGEN')}</span>
+                <span class="kachel-text">Geborgen</span>
+            </div>
+            <div class="kachel status-verschollen">
+                <span class="kachel-zahl">#{startseiteBean.anzahl('VERSCHOLLEN')}</span>
+                <span class="kachel-text">Verschollen</span>
+            </div>
+        </div>
+
+        <h2>So funktioniert es</h2>
+        <ol class="schritte">
+            <li><strong>Melden:</strong> Standort (GPS Koordinaten) und geschätzte Größe eintragen.
+                Name und Telefonnummer sind freiwillig.</li>
+            <li><strong>Anmelden:</strong> Bergende Personen melden sich mit Name und Telefonnummer an.</li>
+            <li><strong>Bergung übernehmen:</strong> Jedes Netz kann nur einer bergenden Person zugeordnet werden.</li>
+            <li><strong>Als geborgen melden:</strong> Nach erfolgreicher Bergung den Status abschließen.</li>
+        </ol>
+    </ui:define>
+</ui:composition>

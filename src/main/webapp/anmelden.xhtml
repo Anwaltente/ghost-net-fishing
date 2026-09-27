@@ -1,0 +1,47 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:pt="jakarta.faces.passthrough">
+
+    <ui:define name="metadaten">
+        <f:metadata>
+            <f:viewParam name="ziel" value="#{sitzung.ziel}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="titel">Anmelden</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Anmelden</h1>
+        <p class="einleitung">
+            Bergende Personen und Personen, die ein Netz als verschollen melden, sind laut Fachkonzept
+            für Rückfragen erreichbar. Bitte geben Sie deshalb Ihren Namen und Ihre Telefonnummer an.
+            Sind Sie bereits bekannt, werden Sie über die Telefonnummer wiedererkannt.
+        </p>
+
+        <h:form id="anmeldeForm" styleClass="formular karte karte-schmal">
+            <div class="feld">
+                <h:outputLabel for="name" value="Name *"/>
+                <h:inputText id="name" value="#{sitzung.eingabe.name}" label="Name"
+                             pt:autocomplete="name"/>
+                <h:message for="name" styleClass="feldfehler"/>
+            </div>
+            <div class="feld">
+                <h:outputLabel for="telefon" value="Telefonnummer *"/>
+                <h:inputText id="telefon" value="#{sitzung.eingabe.telefonnummer}" label="Telefonnummer"
+                             pt:placeholder="+49 171 2345678" pt:type="tel" pt:autocomplete="tel"/>
+                <h:message for="telefon" styleClass="feldfehler"/>
+            </div>
+            <div class="knopfleiste">
+                <h:commandButton id="anmelden" value="Anmelden" action="#{sitzung.anmelden}"
+                                 styleClass="knopf knopf-primaer"/>
+            </div>
+            <p class="klein">
+                Hinweis: Im Prototyp erfolgt die Anmeldung ohne Passwort. Eine echte
+                Authentifizierung ist für einen späteren Sprint vorgesehen.
+            </p>
+        </h:form>
+    </ui:define>
+</ui:composition>

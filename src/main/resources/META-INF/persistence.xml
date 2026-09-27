@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <!-- Persistenzeinheit der Anwendung. Persistenz-Provider ist Hibernate ORM (in WildFly enthalten).
+         Die Datenquelle (MySQL) wird im Applikationsserver unter dem JNDI Namen
+         java:jboss/datasources/GhostNetDS eingerichtet, siehe setup/wildfly-datasource.cli -->
+    <persistence-unit name="ghostnetPU" transaction-type="JTA">
+        <jta-data-source>java:jboss/datasources/GhostNetDS</jta-data-source>
+
+        <class>de.sheasepherd.ghostnet.model.Person</class>
+        <class>de.sheasepherd.ghostnet.model.Geisternetz</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <!-- Tabellen beim Deployment anlegen bzw. anpassen (für den Prototyp ausreichend) -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:insert name="metadaten"/>
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Ghost Net Fishing | <ui:insert name="titel">Start</ui:insert></title>
+    <h:outputStylesheet name="css/style.css"/>
+</h:head>
+<h:body>
+    <header class="kopf">
+        <div class="kopf-innen">
+            <h:link outcome="index" styleClass="marke">
+                <span class="marke-logo">◎</span>
+                <span class="marke-text">Ghost Net Fishing<small>Shea Sepherd</small></span>
+            </h:link>
+
+            <nav class="navigation">
+                <h:link outcome="index" value="Start"
+                        styleClass="#{view.viewId eq '/index.xhtml' ? 'aktiv' : ''}"/>
+                <h:link outcome="melden" value="Netz melden"
+                        styleClass="#{view.viewId eq '/melden.xhtml' ? 'aktiv' : ''}"/>
+                <h:link outcome="netze" value="Zu bergende Netze"
+                        styleClass="#{view.viewId eq '/netze.xhtml' ? 'aktiv' : ''}"/>
+                <h:link outcome="meine-bergungen" value="Meine Bergungen"
+                        styleClass="#{view.viewId eq '/meine-bergungen.xhtml' ? 'aktiv' : ''}"/>
+            </nav>
+
+            <div class="nutzer">
+                <h:panelGroup rendered="#{sitzung.angemeldet}">
+                    <span class="nutzer-name">#{sitzung.angemeldetePerson.name}</span>
+                    <h:form id="abmeldeForm" styleClass="inline">
+                        <h:commandLink id="abmelden" value="Abmelden" action="#{sitzung.abmelden}"
+                                       styleClass="nutzer-link"/>
+                    </h:form>
+                </h:panelGroup>
+                <h:link outcome="anmelden" value="Anmelden" rendered="#{not sitzung.angemeldet}"
+                        styleClass="knopf knopf-hell #{view.viewId eq '/anmelden.xhtml' ? 'aktiv' : ''}"/>
+            </div>
+        </div>
+    </header>
+
+    <main class="inhalt">
+        <h:messages id="meldungen" globalOnly="true" styleClass="meldungen"
+                    infoClass="meldung-info" errorClass="meldung-fehler" warnClass="meldung-warnung"/>
+        <ui:insert name="inhalt"/>
+    </main>
+
+    <footer class="fuss">
+        Ghost Net Fishing, Prototyp Sprint 1 · Jakarta EE (JSF, CDI, JPA) · Shea Sepherd
+    </footer>
+</h:body>
+</html>

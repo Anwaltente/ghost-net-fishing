@@ -1,0 +1,90 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="titel">Zu bergende Netze</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Zu bergende Geisternetze</h1>
+
+        <h:panelGroup layout="block" styleClass="hinweis" rendered="#{not sitzung.angemeldet}">
+            Um eine Bergung zu übernehmen oder ein Netz als verschollen zu melden, müssen Sie sich
+            mit Name und Telefonnummer <h:link outcome="anmelden" value="anmelden">
+                <f:param name="ziel" value="netze"/></h:link>.
+        </h:panelGroup>
+
+        <h:form id="netzForm">
+            <div class="filterleiste">
+                <h:outputLabel for="filter" value="Anzeigen:"/>
+                <h:selectOneMenu id="filter" value="#{netzUebersichtBean.filter}">
+                    <f:selectItem itemValue="OFFEN" itemLabel="Alle noch zu bergenden Netze"/>
+                    <f:selectItem itemValue="GEMELDET" itemLabel="Nur gemeldete (noch frei)"/>
+                    <f:selectItem itemValue="BERGUNG_BEVORSTEHEND" itemLabel="Nur Bergung bevorstehend"/>
+                    <f:ajax listener="#{netzUebersichtBean.laden}" render="netzForm"/>
+                </h:selectOneMenu>
+                <span class="anzahl">#{netzUebersichtBean.netze.size()} Netz(e)</span>
+            </div>
+
+            <h:dataTable id="netzTabelle" value="#{netzUebersichtBean.netze}" var="netz"
+                         styleClass="tabelle" rendered="#{not empty netzUebersichtBean.netze}">
+                <h:column>
+                    <f:facet name="header">Nr.</f:facet>
+                    #{netz.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Standort</f:facet>
+                    <h:outputLink value="#{netz.kartenLink}" target="_blank" title="Auf OpenStreetMap anzeigen">
+                        #{netz.standortText}
+                    </h:outputLink>
+                    <h:panelGroup rendered="#{not empty netz.bemerkung}" styleClass="bemerkung" layout="block">
+                        #{netz.bemerkung}
+                    </h:panelGroup>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Größe</f:facet>
+                    <h:outputText value="#{netz.geschaetzteGroesse}">
+                        <f:convertNumber locale="de" groupingUsed="true"/>
+                    </h:outputText> m²
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Gemeldet am</f:facet>
+                    <h:outputText value="#{netz.gemeldetAm}">
+                        <f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy HH:mm"/>
+                    </h:outputText>
+                    <div class="klein">#{netz.anonymGemeldet ? 'anonym' : 'mit Kontakt'}</div>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    <span class="status status-#{netz.status.name().toLowerCase()}">#{netz.status.bezeichnung}</span>
+                    <h:panelGroup rendered="#{netzUebersichtBean.istMeineBergung(netz)}"
+                                  styleClass="klein" layout="block">von Ihnen übernommen</h:panelGroup>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Aktion</f:facet>
+                    <div class="aktionen">
+                        <h:commandButton value="Bergung übernehmen"
+                                         action="#{netzUebersichtBean.uebernehmen(netz)}"
+                                         rendered="#{sitzung.angemeldet and netz.status eq 'GEMELDET'}"
+                                         styleClass="knopf knopf-primaer knopf-klein"/>
+                        <h:commandButton value="Als geborgen melden"
+                                         action="#{netzUebersichtBean.alsGeborgenMelden(netz)}"
+                                         rendered="#{netzUebersichtBean.istMeineBergung(netz)}"
+                                         styleClass="knopf knopf-erfolg knopf-klein"/>
+                        <h:commandButton value="Verschollen"
+                                         action="#{netzUebersichtBean.alsVerschollenMelden(netz)}"
+                                         rendered="#{sitzung.angemeldet}"
+                                         onclick="return confirm('Netz Nr. #{netz.id} wirklich als verschollen melden? Das Netz war am gemeldeten Standort nicht auffindbar.');"
+                                         title="Netz war am gemeldeten Standort nicht auffindbar"
+                                         styleClass="knopf knopf-warnung knopf-klein"/>
+                    </div>
+                </h:column>
+            </h:dataTable>
+
+            <h:panelGroup layout="block" styleClass="leer" rendered="#{empty netzUebersichtBean.netze}">
+                Aktuell sind keine Netze in dieser Auswahl vorhanden.
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

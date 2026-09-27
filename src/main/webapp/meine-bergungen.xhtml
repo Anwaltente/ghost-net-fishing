@@ -1,0 +1,87 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets">
+
+    <ui:define name="titel">Meine Bergungen</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Meine Bergungen</h1>
+
+        <h:panelGroup layout="block" styleClass="hinweis" rendered="#{not sitzung.angemeldet}">
+            Bitte <h:link outcome="anmelden" value="melden Sie sich an">
+                <f:param name="ziel" value="meine-bergungen"/></h:link>, um Ihre Bergungen zu sehen.
+        </h:panelGroup>
+
+        <h:form id="bergungForm" rendered="#{sitzung.angemeldet}">
+            <h2>Bevorstehende Bergungen</h2>
+            <h:dataTable id="bevorstehend" value="#{meineBergungenBean.bevorstehend}" var="netz"
+                         styleClass="tabelle" rendered="#{not empty meineBergungenBean.bevorstehend}">
+                <h:column>
+                    <f:facet name="header">Nr.</f:facet>
+                    #{netz.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Standort</f:facet>
+                    <h:outputLink value="#{netz.kartenLink}" target="_blank">#{netz.standortText}</h:outputLink>
+                    <h:panelGroup rendered="#{not empty netz.bemerkung}" styleClass="bemerkung" layout="block">
+                        #{netz.bemerkung}
+                    </h:panelGroup>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Größe</f:facet>
+                    <h:outputText value="#{netz.geschaetzteGroesse}">
+                        <f:convertNumber locale="de" groupingUsed="true"/>
+                    </h:outputText> m²
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Übernommen am</f:facet>
+                    <h:outputText value="#{netz.statusGeaendertAm}">
+                        <f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy HH:mm"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Aktion</f:facet>
+                    <h:commandButton value="Als geborgen melden"
+                                     action="#{meineBergungenBean.alsGeborgenMelden(netz)}"
+                                     styleClass="knopf knopf-erfolg knopf-klein"/>
+                </h:column>
+            </h:dataTable>
+            <h:panelGroup layout="block" styleClass="leer" rendered="#{empty meineBergungenBean.bevorstehend}">
+                Sie haben derzeit keine Bergung übernommen.
+                <h:link outcome="netze" value="Zu bergende Netze ansehen"/>
+            </h:panelGroup>
+
+            <h2>Abgeschlossen</h2>
+            <h:dataTable id="abgeschlossen" value="#{meineBergungenBean.abgeschlossen}" var="netz"
+                         styleClass="tabelle" rendered="#{not empty meineBergungenBean.abgeschlossen}">
+                <h:column>
+                    <f:facet name="header">Nr.</f:facet>
+                    #{netz.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Standort</f:facet>
+                    #{netz.standortText}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Größe</f:facet>
+                    #{netz.geschaetzteGroesse} m²
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    <span class="status status-#{netz.status.name().toLowerCase()}">#{netz.status.bezeichnung}</span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Datum</f:facet>
+                    <h:outputText value="#{netz.statusGeaendertAm}">
+                        <f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy HH:mm"/>
+                    </h:outputText>
+                </h:column>
+            </h:dataTable>
+            <h:panelGroup layout="block" styleClass="leer" rendered="#{empty meineBergungenBean.abgeschlossen}">
+                Noch keine abgeschlossenen Bergungen.
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

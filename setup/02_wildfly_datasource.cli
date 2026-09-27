@@ -1,0 +1,26 @@
+# Ghost Net Fishing: MySQL Datenquelle in WildFly einrichten
+#
+# Voraussetzungen:
+#   1. WildFly läuft (bin/standalone.sh bzw. bin\standalone.bat)
+#   2. Der MySQL JDBC Treiber (mysql-connector-j-9.1.0.jar) liegt im Ordner setup/
+#      Download: https://dev.mysql.com/downloads/connector/j/ (Platform Independent)
+#
+# Ausführen aus dem Projektordner:
+#   <WILDFLY_HOME>/bin/jboss-cli.sh --connect --file=setup/02_wildfly_datasource.cli
+#
+# Bei einer anderen Treiberversion bitte den Dateinamen unten zweimal anpassen.
+
+deploy setup/mysql-connector-j-9.1.0.jar
+
+data-source add \
+    --name=GhostNetDS \
+    --jndi-name=java:jboss/datasources/GhostNetDS \
+    --driver-name=mysql-connector-j-9.1.0.jar \
+    --connection-url="jdbc:mysql://localhost:3306/ghostnet?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Europe/Berlin" \
+    --user-name=ghostnet \
+    --password=ghostnet \
+    --validate-on-match=true \
+    --check-valid-connection-sql="SELECT 1" \
+    --enabled=true
+
+:reload
